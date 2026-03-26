@@ -1,0 +1,7 @@
+building a pipeline that returns tha currency from USD to BRL
+
+First step: extracting the data
+I - get data from API
+II - prints it for testing purposes
+III - Save into some JSON file
+
