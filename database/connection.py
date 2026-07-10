@@ -1,17 +1,31 @@
-# database connector
-# this file will return a connection objetc
-# author: rodrigo
-# date: June 8th 2026
+# import pyodbc as db
+from sqlalchemy import create_engine
 
-import mysql.connector
+# database credentials
+server = 'localhost\\SQLEXPRESS'
+database = 'DataEngineeringLearning'
+driver = 'ODBC Driver 17 for SQL Server'
+
+# def get_connection_pyodbc():
+#     try:
+#         conn = db.connect(
+#             f'DRIVER={driver};'
+#             f'SERVER={server};'
+#             f'DATABASE={database};'
+#             'Trusted_Connection=yes;'
+#         )
+#         conn.autocommit = True
+#         return conn
+    
+#     except db.Error as e:
+#         print("Error while connecting to database:", e)
+#         return None
+
 
 def get_connection():
     try:
-        return (mysql.connector.Connect(
-                user='root',
-                password='root', 
-                host='127.0.0.1',
-                database='solucxData'))
-    except mysql.connector.Error as error:
-        print(f"Database connection error: {error}")
-        raise
+        conn = create_engine(f'mssql://{server}/{database}?driver={driver}&trusted_connection=yes')
+        return conn
+    
+    except Exception as e:
+        print("Error while connecting to database by sqlalchemy:", e)
