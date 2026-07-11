@@ -1,26 +1,26 @@
-# import pyodbc as db
+"""
+=====================================================
+Database Connection
+=====================================================
+Script Purpose:
+    This script establishes a connection to the SQL Server database using
+    SQLAlchemy. It defines the database connection settings and provides a
+    reusable function that returns a database engine for use throughout the
+    ETL pipeline.
+
+Notes:
+    - Uses Windows Authentication (Trusted Connection).
+    - Creates a SQLAlchemy engine for SQL Server.
+    - Database credentials are defined as configuration variables.
+    - Reports an error if the connection cannot be established.
+"""
+
 from sqlalchemy import create_engine
 
 # database credentials
 server = 'localhost\\SQLEXPRESS'
 database = 'DataEngineeringLearning'
 driver = 'ODBC Driver 17 for SQL Server'
-
-# def get_connection_pyodbc():
-#     try:
-#         conn = db.connect(
-#             f'DRIVER={driver};'
-#             f'SERVER={server};'
-#             f'DATABASE={database};'
-#             'Trusted_Connection=yes;'
-#         )
-#         conn.autocommit = True
-#         return conn
-    
-#     except db.Error as e:
-#         print("Error while connecting to database:", e)
-#         return None
-
 
 def get_connection():
     try:
