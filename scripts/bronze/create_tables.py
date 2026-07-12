@@ -70,15 +70,6 @@ px_cat_g1v2_ddl = """
             maintenance NVARCHAR(50)
 """
 
-# # table names
-# cust_info = 'crm_cust_info'
-# prd_info = 'crm_prd_info'
-# sales_details = 'crm_sales_details'
-
-# cust_az12 = 'erp_cust_az12'
-# loc_a101 = 'erp_loc_a101'
-# px_cat_g1v2 = 'erp_px_cat_g1v2'
-
 tables = {
     'crm_cust_info': cust_info_ddl,
     'crm_prd_info': prd_info_ddl,
