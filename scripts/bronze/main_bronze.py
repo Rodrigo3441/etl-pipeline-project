@@ -19,8 +19,8 @@ Notes:
     - Reports the total execution time after completion.
 """
 
-from scripts.bronze import create_schema
-from scripts.bronze import create_tables
+from scripts import create_schema
+from scripts.bronze import define_tables
 from scripts.bronze import extract
 from scripts.bronze import load
 from database import connection
@@ -34,8 +34,8 @@ def execute():
 
     start_time = time.perf_counter()
 
-    create_schema.execute(engine)
-    create_tables.execute(engine)
+    create_schema.execute(engine, 'bronze')
+    define_tables.execute(engine)
     data = extract.execute()
     load.execute(engine, data, 'bronze')
 
