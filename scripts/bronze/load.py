@@ -18,7 +18,6 @@ Notes:
 import pandas as pd
 
 def execute(engine, data, schema):
-    
     # transaction is started to insert the data into the bronze layer
     # insertion date format: truncate and insert
     with engine.begin() as conn:
