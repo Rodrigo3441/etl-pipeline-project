@@ -20,6 +20,20 @@ Notes:
 import pandas as pd
 
 def execute(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
+
+    # data type dictionary standardization
+    df = df.astype(
+        {
+            'cst_id': 'int32[pyarrow]',
+            'cst_key': 'string',
+            'cst_firstname': 'string',
+            'cst_lastname': 'string',
+            'cst_marital_status': 'string',
+            'cst_gndr': 'string',
+            'cst_create_date': 'date32[pyarrow]'
+        }
+    )
+
     """
     =====================================================
     Column: cst_id
@@ -49,7 +63,7 @@ def execute(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
     =====================================================
     """
 
-    # Standardize marital status values.
+    # Standardize marital status values
     df['cst_marital_status'] = df['cst_marital_status'].transform(str.upper).transform(str.strip)
     
     # Replace marital status codes with descriptive values.
