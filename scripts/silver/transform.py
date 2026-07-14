@@ -16,25 +16,23 @@ Notes:
 """
 
 from scripts.silver.transformations.crm_cust_info import execute as transform_crm_cust_info
+from scripts.silver.transformations.crm_prd_info import execute as transform_crm_prd_info
 import pandas as pd
 
 # Temporary placeholders.
 # These functions will be moved to individual modules inside the
 # 'transformations' package as they are implemented.
-def transform_crm_prd_info():
-    pass
+def transform_crm_sales_details(df):
+    return df
 
-def transform_crm_sales_details():
-    pass
+def transform_erp_cust_az12(df):
+    return df
 
-def transform_erp_cust_az12():
-    pass
+def transform_erp_loc_a101(df):
+    return df
 
-def transform_erp_loc_a101():
-    pass
-
-def transform_erp_px_cat_g1v2():
-    pass
+def transform_erp_px_cat_g1v2(df):
+    return df
 
 
 def run_table_transformation(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
@@ -49,19 +47,19 @@ def run_table_transformation(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
             return transform_crm_cust_info(table_name, df)
         
         case 'crm_prd_info':
-            return transform_crm_prd_info()
+            return transform_crm_prd_info(table_name, df)
 
         case 'crm_sales_details':
-            return transform_crm_sales_details()
+            return transform_crm_sales_details(df)
 
         case 'erp_cust_az12':
-            return transform_erp_cust_az12()
+            return transform_erp_cust_az12(df)
         
         case 'erp_loc_a101':
-            return transform_erp_loc_a101()
+            return transform_erp_loc_a101(df)
         
         case 'erp_px_cat_g1v2':
-            return transform_erp_px_cat_g1v2()
+            return transform_erp_px_cat_g1v2(df)
 
 
 def execute(data: dict) -> dict:
