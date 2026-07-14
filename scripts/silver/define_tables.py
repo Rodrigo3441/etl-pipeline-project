@@ -29,8 +29,21 @@ cust_info_ddl = """
                 dwh_create_date    DATETIME2 DEFAULT GETDATE()
 """
 
+prd_info_ddl = """
+                prd_id          INT,
+                cat_id          NVARCHAR(50),
+                prd_key         NVARCHAR(50),
+                prd_nm		    NVARCHAR(50),
+                prd_cost	    INT,
+                prd_line		NVARCHAR(50),
+                prd_start_dt	DATE,
+                prd_end_dt	    DATE,
+                dwh_create_date DATETIME2 DEFAULT GETDATE()
+"""
+
 tables = {
-    'crm_cust_info': cust_info_ddl
+    'crm_cust_info': cust_info_ddl,
+    'crm_prd_info': prd_info_ddl
 }
 
 def execute(engine):
