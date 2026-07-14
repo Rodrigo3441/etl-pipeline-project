@@ -18,5 +18,5 @@ Notes:
 import scripts.bronze.main_bronze as bronze
 import scripts.silver.main_silver as silver
 
-bronze.execute()
+# bronze.execute()
 silver.execute()
