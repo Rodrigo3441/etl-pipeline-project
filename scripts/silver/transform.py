@@ -17,14 +17,13 @@ Notes:
 
 from scripts.silver.transformations.crm_cust_info import execute as transform_crm_cust_info
 from scripts.silver.transformations.crm_prd_info import execute as transform_crm_prd_info
+from scripts.silver.transformations.crm_sales_details import execute as transform_crm_sales_details
+
 import pandas as pd
 
 # Temporary placeholders.
 # These functions will be moved to individual modules inside the
 # 'transformations' package as they are implemented.
-def transform_crm_sales_details(df):
-    return df
-
 def transform_erp_cust_az12(df):
     return df
 
