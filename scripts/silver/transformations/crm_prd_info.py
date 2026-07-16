@@ -21,7 +21,7 @@ Notes:
 import pandas as pd
 from datetime import timedelta
 
-def execute(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
+def execute(df: pd.DataFrame) -> pd.DataFrame:
    
     # data type dictionary standardization
     df = df.astype(
@@ -31,8 +31,8 @@ def execute(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
             'prd_nm': 'string',
             'prd_cost': 'int32[pyarrow]',
             'prd_line': 'string',
-            'prd_start_dt': 'datetime64[s]',
-            'prd_end_dt':   'datetime64[s]'
+            'prd_start_dt': 'date32[pyarrow]',
+            'prd_end_dt':   'date32[pyarrow]'
         }
     )
 
@@ -62,11 +62,26 @@ def execute(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
     # replace name codes with meaningful information
     df['prd_line'] = df['prd_line'].case_when(
         caselist=[
-            (df['prd_line'].str.contains('M'), 'Mountain'),
-            (df['prd_line'].str.contains('R'), 'Road'),
-            (df['prd_line'].str.contains('S'), 'Other Sales'),
-            (df['prd_line'].str.contains('T'), 'Touring'),
-            (pd.Series(True, index=df.index), 'n/a')
+            (
+                (df['prd_line'].str.contains('M')),
+                'Mountain'
+            ),
+            (
+                (df['prd_line'].str.contains('R')),
+                'Road'
+            ),
+            (
+                (df['prd_line'].str.contains('S')),
+                'Other Sales'
+            ),
+            (
+                (df['prd_line'].str.contains('T')),
+                'Touring'
+            ),
+            (
+                (pd.Series(True, index=df.index)),
+                'n/a'
+            )
         ]
     )
 
