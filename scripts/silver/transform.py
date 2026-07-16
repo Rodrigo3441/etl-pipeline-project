@@ -18,21 +18,11 @@ Notes:
 from scripts.silver.transformations.crm_cust_info import execute as transform_crm_cust_info
 from scripts.silver.transformations.crm_prd_info import execute as transform_crm_prd_info
 from scripts.silver.transformations.crm_sales_details import execute as transform_crm_sales_details
+from scripts.silver.transformations.erp_cust_az12 import execute as transform_erp_cust_az12
+from scripts.silver.transformations.erp_loc_a101 import execute as transform_erp_loc_a101
+from scripts.silver.transformations.erp_px_cat_g1v2 import execute as transform_erp_px_cat_g1v2
 
 import pandas as pd
-
-# Temporary placeholders.
-# These functions will be moved to individual modules inside the
-# 'transformations' package as they are implemented.
-def transform_erp_cust_az12(df):
-    return df
-
-def transform_erp_loc_a101(df):
-    return df
-
-def transform_erp_px_cat_g1v2(df):
-    return df
-
 
 def run_table_transformation(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -43,10 +33,10 @@ def run_table_transformation(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
 
     match table_name:
         case 'crm_cust_info':
-            return transform_crm_cust_info(table_name, df)
+            return transform_crm_cust_info(df)
         
         case 'crm_prd_info':
-            return transform_crm_prd_info(table_name, df)
+            return transform_crm_prd_info(df)
 
         case 'crm_sales_details':
             return transform_crm_sales_details(df)
