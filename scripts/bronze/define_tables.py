@@ -79,6 +79,6 @@ tables = {
 
 def execute(engine):
     for table_name, ddl in tables.items():
-        create_table.execute(engine, table_name, tables[table_name], 'bronze')
+        create_table.execute(engine, table_name, ddl, 'bronze')
 
 
