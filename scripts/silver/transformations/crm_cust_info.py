@@ -19,7 +19,7 @@ Notes:
 
 import pandas as pd
 
-def execute(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
+def execute(df: pd.DataFrame) -> pd.DataFrame:
 
     # data type dictionary standardization
     df = df.astype(
@@ -69,9 +69,18 @@ def execute(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
     # Replace marital status codes with descriptive values.
     df['cst_marital_status'] = df['cst_marital_status'].case_when(
         caselist=[
-            (df['cst_marital_status'].str.contains('S') ,'Single'), 
-            (df['cst_marital_status'].str.contains('M'), 'Married'),
-            (pd.Series(True, index=df.index), 'n/a')
+            (
+                (df['cst_marital_status'].str.contains('S')),
+                'Single'
+            ), 
+            (
+                (df['cst_marital_status'].str.contains('M')), 
+                'Married'
+            ),
+            (
+                (pd.Series(True, index=df.index)),
+                'n/a'
+            )
         ]
     )
 
@@ -84,9 +93,18 @@ def execute(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
     # replace gender codes with descriptive values
     df['cst_gndr'] = df['cst_gndr'].case_when(
         caselist=[
-            (df['cst_gndr'].str.contains('F') ,'Female'), 
-            (df['cst_gndr'].str.contains('M'), 'Male'),
-            (pd.Series(True, index=df.index), 'n/a')
+            (
+                (df['cst_gndr'].str.contains('F')),
+                'Female'
+            ), 
+            (
+                (df['cst_gndr'].str.contains('M')),
+                'Male'
+            ),
+            (
+                (pd.Series(True, index=df.index)),
+                'n/a'
+            )
         ]
     )
 
