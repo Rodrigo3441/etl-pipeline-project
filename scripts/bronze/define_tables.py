@@ -77,8 +77,8 @@ tables = {
     'erp_px_cat_g1v2': px_cat_g1v2_ddl
 }
 
-def execute(engine):
+def execute(engine, schema):
     for table_name, ddl in tables.items():
-        create_table.execute(engine, table_name, ddl, 'bronze')
+        create_table.execute(engine, table_name, ddl, schema)
 
 
