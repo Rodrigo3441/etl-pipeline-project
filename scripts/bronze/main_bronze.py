@@ -22,12 +22,11 @@ Notes:
 from scripts import create_schema
 from scripts.bronze import define_tables
 from scripts.bronze import extract
-from scripts.bronze import load
+from scripts import load
 from database import connection
 import time
 
 def execute():
-
     engine = connection.get_connection()
 
     print('LOADING THE BRONZE LAYER')
@@ -35,9 +34,9 @@ def execute():
     start_time = time.perf_counter()
 
     create_schema.execute(engine, 'bronze')
-    define_tables.execute(engine)
-    data = extract.execute()
-    load.execute(engine, data, 'bronze')
+    define_tables.execute(engine, 'bronze')
+    raw_data = extract.execute()
+    load.execute(engine, raw_data, 'bronze')
 
     end_time = time.perf_counter()
 
