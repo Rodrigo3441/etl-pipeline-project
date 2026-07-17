@@ -1,18 +1,19 @@
 """
 =====================================================
-Load Data into Bronze Layer
+Load Data into Data Warehouse Layer
 =====================================================
 Script Purpose:
-    This script loads the extracted source data into the tables of the
-    'bronze' schema. Before inserting new records, the existing data in each
-    table is removed, ensuring the Bronze layer always contains a fresh copy
-    of the source data.
+    This script loads pandas DataFrames into the specified data warehouse
+    layer (Bronze, Silver, or Gold). Before inserting new records, the
+    existing data in each table is removed, ensuring the target layer
+    always contains the latest version of the processed data.
 
 Notes:
     - Uses pandas to load DataFrames into SQL Server.
-    - Data is loaded within a single database transaction.
-    - Existing rows are deleted before new data is inserted.
-    - Table names are obtained dynamically from the extracted data dictionary.
+    - Executes all insert operations within a single database transaction.
+    - Existing rows are removed before new data is inserted.
+    - The target schema is provided dynamically.
+    - Table names are obtained from the input data dictionary.
 """
 
 import pandas as pd
