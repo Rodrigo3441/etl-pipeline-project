@@ -44,6 +44,9 @@ def execute(df: pd.DataFrame) -> pd.DataFrame:
     # derive a new column called 'cat_id', extracted from the first 4 characters of the existing column
     df.insert(1, 'cat_id', df['prd_key'].str[:5])
 
+    # replace hyphen with underscore symbol 
+    df['cat_id'] = df['cat_id'].str.replace('-', '_')
+
     # remove the first 5 characters from the column
     df['prd_key'] = df['prd_key'].str[6:]
 
