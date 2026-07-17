@@ -70,6 +70,7 @@ id NVARCHAR(50),
 cat	NVARCHAR(50),
 subcat NVARCHAR(50),
 maintenance NVARCHAR(50),
+dwh_create_date DATETIME2 DEFAULT GETDATE()
 """
 
 tables = {
@@ -81,7 +82,7 @@ tables = {
     'erp_px_cat_g1v2': px_cat_g1v2_dll
 }
 
-def execute(engine):
+def execute(engine, schema):
     for table_name, ddl in tables.items():
-        create_table.execute(engine, table_name, ddl, 'silver')
+        create_table.execute(engine, table_name, ddl, schema)
 
