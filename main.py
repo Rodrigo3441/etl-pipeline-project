@@ -17,6 +17,15 @@ Notes:
 
 import scripts.bronze.main_bronze as bronze
 import scripts.silver.main_silver as silver
+import scripts.gold.main_gold as gold
+import time
 
-# bronze.execute()
+start_time = time.perf_counter()
+
+bronze.execute()
 silver.execute()
+gold.execute()
+
+end_time = time.perf_counter()
+
+print(end_time - start_time)
