@@ -1,16 +1,16 @@
 """
 =====================================================
-Extract Data from Bronze Layer
+Extract Data from Bronze or Silver Layer
 =====================================================
 Script Purpose:
-    This script extracts all data from the tables stored in the 'bronze'
+    This script extracts all data from the tables stored in the 'bronze' or 'silver'
     schema and loads each table into a pandas DataFrame. The extracted
     DataFrames are returned as a dictionary, where each key represents a
     table name and each value contains the corresponding DataFrame.
 
 Notes:
     - Uses SQLAlchemy to connect to the database.
-    - Dynamically retrieves all table names from the Bronze schema.
+    - Dynamically retrieves all table names from bronze or silver schema.
     - Converts each query result into a pandas DataFrame.
     - Returns a dictionary containing the extracted Bronze tables,
       allowing subsequent transformation steps to process the data.
@@ -19,7 +19,7 @@ Notes:
 from sqlalchemy import text
 import pandas as pd
 
-def return_all_tables_from_schema(schema, engine) -> list:
+def return_all_tables_from_schema(engine, schema: str) -> list:
 
     # list containing all table names from specified layer
     tables = []
@@ -37,13 +37,13 @@ def return_all_tables_from_schema(schema, engine) -> list:
     return tables
 
 
-def execute(engine):
+def execute(engine, schema: str) -> dict:
     # store all table names from bronze layer
-    tables = return_all_tables_from_schema('bronze', engine)
+    tables = return_all_tables_from_schema(engine, schema)
 
     # data dictionary that contains:
     # key:table_name value:dataframe of that table
-    bronze_data_dict = {}
+    data_dict = {}
 
     with engine.connect() as conn:
 
@@ -51,12 +51,12 @@ def execute(engine):
         for table_name in tables:
 
             # retrieve all the data from the table of table in the database
-            result = conn.execute(text(f'SELECT * FROM bronze.{table_name}')).fetchall()
+            result = conn.execute(text(f'SELECT * FROM {schema}.{table_name}')).fetchall()
 
             # converts the data into a dataframe
             result = pd.DataFrame(result)
 
             # create a new key in the dictionary and assign the dataframe correspondent to that table
-            bronze_data_dict[f'{table_name}'] = result
+            data_dict[f'{table_name}'] = result
             
-    return bronze_data_dict
+    return data_dict
