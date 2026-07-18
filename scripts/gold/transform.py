@@ -44,15 +44,11 @@ def execute(data: dict) -> dict:
             dim_products_data
         )
     
-    # update data to an empty dictionary
-    data = {}
-
-    # append new transformed data into the data dictionary
-    data['dim_customers'] = dim_customers_data
-    data['dim_products'] = dim_products_data
-    data['fact_sales'] = fact_sales_data
-
-    return data
+    return {
+        'dim_customers': dim_customers_data,
+        'dim_products': dim_products_data,
+        'fact_sales': fact_sales_data
+    }
 
     
         
