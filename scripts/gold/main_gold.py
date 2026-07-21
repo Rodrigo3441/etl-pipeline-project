@@ -24,17 +24,34 @@ from scripts.gold import transform
 from scripts import load
 from scripts.gold import define_tables
 from database import connection
+import time
 
 def execute():
-    engine = connection.get_connection()
 
-    print('LOADING THE GOLD LAYER')
+    try:
+        start_time = time.perf_counter()
 
-    create_schema.execute(engine, 'gold')
-    define_tables.execute(engine, 'gold')
-    silver_data = extract.execute(engine, 'silver')
-    gold_data = transform.execute(silver_data)
-    load.execute(engine, gold_data, 'gold')
+        engine = connection.get_connection()
+
+        print('LOADING THE GOLD LAYER')
+        
+        create_schema.execute(engine, 'gold')
+        define_tables.execute(engine, 'gold')
+        silver_data = extract.execute(engine, 'silver')
+        gold_data = transform.execute(silver_data)
+        load.execute(engine, gold_data, 'gold')
+
+        end_time = time.perf_counter()
+
+        total_time = end_time - start_time
+
+        print(f'Gold layer execution time: {(total_time):.6f} seconds')
+
+        return total_time
+    
+    except Exception as e:
+        print('An error occurred while executing the gold layer')
+        raise
 
     
 
