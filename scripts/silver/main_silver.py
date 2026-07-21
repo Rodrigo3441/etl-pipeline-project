@@ -23,16 +23,31 @@ from scripts.silver import define_tables
 from scripts.silver import extract
 from scripts.silver import transform
 from scripts import load
+import time
 
 def execute():  
-    engine = connection.get_connection()
 
-    print('LOADING THE SILVER LAYER')
+    try:
+        start_time = time.perf_counter()
+
+        engine = connection.get_connection()
+
+        print('LOADING THE SILVER LAYER')
+        
+        create_schema.execute(engine, 'silver')
+        define_tables.execute(engine, 'silver')
+        bronze_data = extract.execute(engine, 'bronze')
+        silver_data = transform.execute(bronze_data)
+        load.execute(engine, silver_data, 'silver')
+
+        end_time = time.perf_counter()
+
+        total_time = end_time - start_time
+
+        print(f'Silver layer execution time: {(total_time):.6f} seconds')
+
+        return total_time
     
-    create_schema.execute(engine, 'silver')
-    define_tables.execute(engine, 'silver')
-
-    bronze_data = extract.execute(engine, 'bronze')
-    silver_data = transform.execute(bronze_data)
-
-    load.execute(engine, silver_data, 'silver')
+    except Exception as e:
+        print('An error occurred while executing the silver layer')
+        raise
