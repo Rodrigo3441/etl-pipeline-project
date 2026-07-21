@@ -27,17 +27,27 @@ from database import connection
 import time
 
 def execute():
-    engine = connection.get_connection()
 
-    print('LOADING THE BRONZE LAYER')
+    try:
+        start_time = time.perf_counter()
 
-    start_time = time.perf_counter()
+        engine = connection.get_connection()
 
-    create_schema.execute(engine, 'bronze')
-    define_tables.execute(engine, 'bronze')
-    raw_data = extract.execute()
-    load.execute(engine, raw_data, 'bronze')
+        print('LOADING THE BRONZE LAYER')
+        
+        create_schema.execute(engine, 'bronze')
+        define_tables.execute(engine, 'bronze')
+        raw_data = extract.execute()
+        load.execute(engine, raw_data, 'bronze')
 
-    end_time = time.perf_counter()
+        end_time = time.perf_counter()
 
-    print(f'Bronze layer execution time: {(end_time - start_time):.6f} seconds')
+        total_time = end_time - start_time
+
+        print(f'Bronze layer execution time: {(total_time):.6f} seconds')
+
+        return total_time
+    
+    except Exception as e:
+        print('An error occurred while executing the bronze layer')
+        raise
