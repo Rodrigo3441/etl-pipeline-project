@@ -18,6 +18,9 @@ Notes:
     - Any errors during table creation are reported to the user.
 """
 from sqlalchemy import text
+import logging
+
+logger = logging.getLogger()
 
 def execute(engine, table_name, ddl, schema):
     
@@ -25,14 +28,19 @@ def execute(engine, table_name, ddl, schema):
     with engine.connect() as conn:
         table_exists = conn.execute(
             text(f"""SELECT 1 FROM information_schema.tables 
-                     WHERE table_schema = \'{schema}\' 
-                     AND table_name = \'{table_name}\'""")
+                     WHERE table_schema = :schema 
+                     AND table_name = :table_name
+                """),
+            {
+                "schema": schema,
+                "table_name": table_name
+            }
         ).fetchone()
 
     # if the table doesn't exists, the script will create it
     if table_exists is None:
         
-        print(f'Table {table_name} not found, creating the table')
+        logger.info(f'Table \'{table_name}\' not found, creating it.')
 
         try:
             # a transaction is started and the table created
@@ -41,10 +49,11 @@ def execute(engine, table_name, ddl, schema):
                                                         ( {ddl} )
                                                         """))
 
-            print(f'Table {table_name} created successfully')
+            logger.info(f'Table \'{table_name}\' created successfully.')
 
         except Exception as e:
-            print(f'An error occurred while trying to create the table {table_name}: {e}')
+            logger.exception(f'Failed to create table \'{table_name}\'.')
+            raise
 
     else:
-        print(f'Table {table_name} has been found, skipping its creation')
+        logger.info(f'Table \'{table_name}\' already exists.')

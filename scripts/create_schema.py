@@ -17,6 +17,9 @@ Notes:
     - If an error occurs during schema creation, the pipeline is stopped.
 """
 from sqlalchemy import text
+import logging
+
+logger = logging.getLogger()
 
 def execute(engine, schema):
 
@@ -24,14 +27,16 @@ def execute(engine, schema):
     with engine.connect() as conn:
         schema_exists = conn.execute(
             text(f"""SELECT 1 FROM information_schema.schemata 
-                 WHERE schema_name = '{schema}'""")
+                 WHERE schema_name = :schema
+                 """),
+            {"schema": schema}
         ).fetchone()
 
 
         # check if the specified schema already exists
         
         if schema_exists is None:
-            print(f'{schema} schema not found, creating the {schema} schema:')
+            logger.info(f'{schema} schema not found, creating it.')
 
             try:
                 # create the specified schema in the database to store tables from the corresponding layer
@@ -39,12 +44,11 @@ def execute(engine, schema):
                 with engine.begin() as conn:
                     conn.execute(text(f'CREATE SCHEMA {schema}'))
 
-                print(f'{schema} schema created successfully')
+                logger.info(f'Schema \'{schema}\' created successfully')
 
             except Exception as e:
-                print(f'An error occurred while trying to create the {schema} schema: {e}')
-                print('Stopping the pipeline')
-                return
+                logger.exception(f"Failed to create schema '{schema}'.")
+                raise
 
         else:
-            print(f'{schema} schema has been found, continuing the extract process')
+            logger.info(f'Schema \'{schema}\' already exists.')
