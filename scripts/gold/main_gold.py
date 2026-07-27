@@ -25,6 +25,9 @@ from scripts import load
 from scripts.gold import define_tables
 from database import connection
 import time
+import logging
+
+logger = logging.getLogger()
 
 def execute():
 
@@ -33,24 +36,28 @@ def execute():
 
         engine = connection.get_connection()
 
-        print('LOADING THE GOLD LAYER')
-        
+        logger.info('Creating Gold Schema')
         create_schema.execute(engine, 'gold')
+        logger.info('Creating Gold Tables')
         define_tables.execute(engine, 'gold')
+        logger.info('Extracting the Silver Data')
         silver_data = extract.execute(engine, 'silver')
+        logger.info('Transforming the Silver Data')
         gold_data = transform.execute(silver_data)
+        logger.info('Loading the Silver Data into Gold layer')
         load.execute(engine, gold_data, 'gold')
 
         end_time = time.perf_counter()
 
         total_time = end_time - start_time
 
-        print(f'Gold layer execution time: {(total_time):.6f} seconds')
+        logger.info('Gold layer completed successfully')
+        logger.info(f'Gold layer execution time: {(total_time):.6f} seconds')
 
         return total_time
     
     except Exception as e:
-        print('An error occurred while executing the gold layer')
+        logger.error('An error occurred while executing the gold layer')
         raise
 
     

@@ -24,6 +24,9 @@ from scripts.silver import extract
 from scripts.silver import transform
 from scripts import load
 import time
+import logging
+
+logger = logging.getLogger()
 
 def execute():  
 
@@ -31,23 +34,27 @@ def execute():
         start_time = time.perf_counter()
 
         engine = connection.get_connection()
-
-        print('LOADING THE SILVER LAYER')
         
+        logger.info('Creating Silver Schema')
         create_schema.execute(engine, 'silver')
+        logger.info('Creating Silver Tables')
         define_tables.execute(engine, 'silver')
+        logger.info('Extracting the Bronze Data')
         bronze_data = extract.execute(engine, 'bronze')
+        logger.info('Transforming the Bronze Data')
         silver_data = transform.execute(bronze_data)
+        logger.info('Loading the Bronze Data into Silver layer')
         load.execute(engine, silver_data, 'silver')
 
         end_time = time.perf_counter()
 
         total_time = end_time - start_time
 
-        print(f'Silver layer execution time: {(total_time):.6f} seconds')
+        logger.info('Silver layer completed successfully')
+        logger.info(f'Silver layer execution time: {(total_time):.6f} seconds')
 
         return total_time
     
     except Exception as e:
-        print('An error occurred while executing the silver layer')
+        logger.error('An error occurred while executing the silver layer')
         raise

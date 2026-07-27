@@ -25,29 +25,35 @@ from scripts.bronze import extract
 from scripts import load
 from database import connection
 import time
+import logging
+
+logger = logging.getLogger()
 
 def execute():
 
     try:
-        start_time = time.perf_counter()
+        start_time = time.perf_counter()        
 
         engine = connection.get_connection()
-
-        print('LOADING THE BRONZE LAYER')
         
+        logger.info('Creating Bronze Schema')
         create_schema.execute(engine, 'bronze')
+        logger.info('Creating Bronze Tables')
         define_tables.execute(engine, 'bronze')
+        logger.info('Extracting the raw Data')
         raw_data = extract.execute()
+        logger.info('Loading the raw Data into Bronze layer')
         load.execute(engine, raw_data, 'bronze')
 
         end_time = time.perf_counter()
 
         total_time = end_time - start_time
 
-        print(f'Bronze layer execution time: {(total_time):.6f} seconds')
+        logger.info('Bronze layer completed successfully')
+        logger.info(f'Bronze layer execution time: {(total_time):.6f} seconds')
 
         return total_time
     
     except Exception as e:
-        print('An error occurred while executing the bronze layer')
+        logger.exception('An error occurred while executing the bronze layer')
         raise
