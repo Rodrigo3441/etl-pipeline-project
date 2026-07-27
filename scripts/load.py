@@ -17,17 +17,24 @@ Notes:
 """
 
 import pandas as pd
+import logging
+
+logger = logging.getLogger()
 
 def execute(engine, data, schema):
     # transaction is started to insert the data into the bronze layer
     # insertion date format: truncate and insert
-    with engine.begin() as conn:
-        for table_name, df in data.items():
-    
-            df.to_sql(
-                        name=table_name, 
-                        con=conn, 
-                        schema=schema,
-                        if_exists='delete_rows', 
-                        index=False
-                     )
+    try:
+        with engine.begin() as conn:
+            for table_name, df in data.items():
+        
+                df.to_sql(
+                            name=table_name, 
+                            con=conn, 
+                            schema=schema,
+                            if_exists='delete_rows', 
+                            index=False
+                        )
+    except Exception as e:
+        logger.exception(f'Failed to load the data into the schema \'{schema}\': {e}')
+        raise
