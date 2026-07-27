@@ -28,8 +28,10 @@ def return_all_tables_from_schema(engine, schema: str) -> list:
         # retrieve all the table names from the specified schema
         result = conn.execute(text(f"""SELECT table_name 
                                        FROM information_schema.tables 
-                                       WHERE table_schema = \'{schema}\'
-                                    """)).fetchall()
+                                       WHERE table_schema = :schema
+                                    """),
+                                    {"schema": schema}
+                                ).fetchall()
         result = list(result)
         
         tables = [row.table_name for row in result]
