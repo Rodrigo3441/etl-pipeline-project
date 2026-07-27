@@ -23,13 +23,16 @@ from scripts.silver.transformations.erp_loc_a101 import execute as transform_erp
 from scripts.silver.transformations.erp_px_cat_g1v2 import execute as transform_erp_px_cat_g1v2
 
 import pandas as pd
+import logging
+
+logger = logging.getLogger()
 
 def run_table_transformation(table_name: str, df: pd.DataFrame) -> pd.DataFrame:
     """
     Applies the appropriate transformation rules based on the table name.
     """
 
-    print(f'Transforming {table_name} table')
+    logger.info(f'Transforming table \'{table_name}\'')
 
     match table_name:
         case 'crm_cust_info':
