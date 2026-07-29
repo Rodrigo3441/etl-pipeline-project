@@ -1,55 +1,47 @@
-# Data Engineering Learning
-
-A personal learning project focused on building a complete ETL pipeline using the Medallion Architecture.
-
+# ETL Python Pipeline Project
 ## Overview
 
-This project demonstrates how raw data can be extracted from multiple CSV files, loaded into SQL Server, transformed with pandas, and organized into Bronze, Silver, and Gold layers following modern data warehouse principles.
+This project implements a complete **ETL (Extract, Transform, Load) pipeline** in Python, following the **Medallion Architecture** (Bronze, Silver, and Gold layers). It demonstrates how raw data from multiple CRM and ERP CSV sources can be extracted, transformed, and loaded into a Microsoft SQL Server data warehouse through a modular and scalable pipeline.
 
-The main objective is to learn data engineering by designing and implementing an end-to-end ETL pipeline from scratch while applying software engineering practices such as modularity, code reusability, documentation, and clean project organization.
+The pipeline is designed with a layered architecture, where each stage has a specific responsibility. The Bronze layer ingests raw source data into the database, the Silver layer performs data cleansing and transformations to improve data quality, and the Gold layer creates business-ready dimensional models for analytical reporting.
+
+To promote maintainability and code organization, the project is divided into independent modules responsible for schema creation, table creation, data extraction, transformation, and loading. Layer orchestration is handled by dedicated pipeline controllers, while centralized logging and exception handling provide execution monitoring and simplify troubleshooting.
+
+This project serves as a practical implementation of Data Engineering concepts using Python, pandas, SQLAlchemy, and Microsoft SQL Server, demonstrating software engineering best practices such as modular design, reusable components, structured logging, execution time monitoring, and comprehensive documentation.
+
+
+## Features
+
+- Modular ETL architecture<br>
+- Bronze, Silver and Gold layers<br>
+- SQL Server integration<br>
+- pandas transformations<br>
+- SQLAlchemy<br>
+- Centralized logging<br>
+- Execution time monitoring<br>
+- Exception handling<br>
+- Modular project structure<br>
+
+## Project Requirements
+
 
 ## Technologies
 
-- Python
-- Pandas
-- SQLAlchemy
-- Microsoft SQL Server
-- SQL Server Management Studio (SSMS)
+| Category                     | Technologies                    |
+| ---------------------------- | ------------------------------- |
+| **Programming Language**     | Python                          |
+| **Data Processing and Tranformations**     | `pandas`          |
+| **Database Connectivity**    | `SQLAlchemy`                    |
+| **Database Driver**          | pyodbc
+| **Logging**                  | Python `logging`                |
+| **Database**                 | Microsoft SQL Server            |
+| **Development Tools**        | Visual Studio Code              |
+| **Documentation & Diagrams** | Draw.io                         |
+| **Version Control**          | Git, GitHub                     |
 
-## Current Progress
-
-### Bronze Layer
-- ✅ Database connection
-- ✅ Bronze schema creation
-- ✅ Bronze table creation
-- ✅ Data extraction from CSV files
-- ✅ Data loading into SQL Server
-
-### Silver Layer
-- ✅ Silver schema creation
-- ✅ Silver table creation
-- ✅ Dynamic extraction from Bronze
-- ✅ Transformation orchestrator
-- ✅ Data type standardization
-- ✅ Data cleansing and validation
-- ✅ CRM transformations
-- ✅ ERP transformations
-- ✅ Data loading into SQL Server
-
-### Gold Layer
-- ✅ Gold schema creation
-- ✅ Gold table creation
-- ✅ Dynamic extraction from Silver
-- ✅ Customer dimension (dim_customers)
-- ✅ Product dimension (dim_products)
-- ✅ Sales fact table (fact_sales)
-- ✅ Business-ready data loading into SQL Server
-
-## Project Structure
-
-```text
+## Repository Structure
+``` bash
 etl-pipeline-project/
-│
 ├── database/
 │   └── connection.py
 │
@@ -57,12 +49,23 @@ etl-pipeline-project/
 │   ├── source_crm/
 │   └── source_erp/
 │
+├── docs/
+│ 
 ├── scripts/
 │   ├── bronze/
 │   │   ├── define_tables.py
 │   │   ├── extract.py
-│   │   ├── load.py
 │   │   └── main_bronze.py
+│   │
+│   ├── gold/
+│   │   ├── transformations/
+│   │   │   ├── dim_customers.py
+│   │   │   ├── dim_products.py
+│   │   │   └── fact_sales.py
+│   │   │
+│   │   ├── define_tables.py
+│   │   ├── main_gold.py
+│   │   └── transform.py
 │   │
 │   ├── silver/
 │   │   ├── transformations/
@@ -75,78 +78,50 @@ etl-pipeline-project/
 │   │   │
 │   │   ├── define_tables.py
 │   │   ├── extract.py
-│   │   ├── transform.py
-│   │   ├── load.py
-│   │   └── main_silver.py
-│   │
-│   ├── gold/
+│   │   ├── main_silver.py
+│   │   └── transform.py
 │   │
 │   ├── create_schema.py
-│   └── create_table.py
+│   ├── create_table.py
+│   └── load.py
 │
+├── .gitignore
 ├── main.py
+├── pipeline.log
 └── README.md
 ```
 
-## Pipeline Architecture
+## Project Architecture
 
-```
-CSV Files
-    │
-    ▼
-Bronze Layer
-    │
-    ▼
-Silver Layer
-    │
-    ▼
-Gold Layer
-    ├── dim_customers
-    ├── dim_products
-    └── fact_sales
-```
 
-## Roadmap
+## ETL Flow
 
-- [x] Bronze Layer
-- [x] Silver Layer
-- [x] Gold Layer
-- [ ] Exception handling
-- [ ] Pipeline logging
-- [ ] Execution time monitoring
-- [ ] Data quality checks
-- [ ] Configuration file
-- [ ] Unit tests
-- [ ] Power BI dashboard
-- [ ] Complete documentation
 
-## Learning Objectives
+## Medallion Architecture
 
-This project is being developed to practice and understand:
 
-- ETL pipeline development
-- Medallion Architecture
-- Data warehouse design
-- Star schema modeling
-- Dimension and Fact tables
-- Data transformation with pandas
-- SQLAlchemy
-- SQL Server integration
-- Writing modular and maintainable Python code
-- ETL orchestration
-- Software engineering best practices
+## Logging
+
+
+## Documentation
+
+
+## How to Run
+
+
+## Example Output
+
 
 ## Future Improvements
 
-- Add structured logging across all pipeline layers.
-- Implement centralized exception handling.
-- Measure execution time for each layer and the complete pipeline.
-- Add data quality validation reports.
-- Improve configuration management.
-- Create architecture diagrams.
-- Build a Power BI dashboard using the Gold layer.
-- Containerize the project with Docker.
 
-## Purpose
+---
 
-This repository serves as a hands-on learning project for data engineering. The goal is not only to build a working ETL pipeline, but also to understand how real-world data engineering projects are organized, developed, documented, and maintained.
+## License
+
+This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and share this project with proper attribution.
+
+---
+## 👨‍💻 About Me
+
+Hi! i'm Rodrigo, a data engineer student that is learning new things every day.
