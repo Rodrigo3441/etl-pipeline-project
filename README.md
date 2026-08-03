@@ -145,8 +145,8 @@ etl-pipeline-project/
 │
 ├── .gitignore                     # Files and directories excluded from version control.
 ├── main.py                        # Entry point of the ETL pipeline.
-├── pipeline.log                   # Execution logs generated during pipeline runs.
-└── README.md                      # Project documentation.
+├── README.md                      # Project documentation.
+└── requirements.txt               # Project requirements for running
 ```
 
 
